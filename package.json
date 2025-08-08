@@ -1,0 +1,13 @@
+{
+  "name": "0284-assignment_05-l2_m05_m_034-a_05-d_28_07_2025",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
