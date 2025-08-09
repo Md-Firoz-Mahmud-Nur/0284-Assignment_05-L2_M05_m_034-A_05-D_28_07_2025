@@ -1,21 +1,28 @@
+import bcrypt from "bcryptjs";
+import httpStatus from "http-status-codes";
+import { JwtPayload } from "jsonwebtoken";
+import { envVariables } from "../../config/env";
 import AppError from "../../errorHelpers/AppError";
 import { IAuthProvider, IUser, Role } from "./user.interface";
 import { User } from "./user.model";
-import httpStatus from "http-status-codes";
-import bcrypt from "bcryptjs";
-import { JwtPayload } from "jsonwebtoken";
-import { envVariables } from "../../config/env";
 
 const createUser = async (payload: Partial<IUser>) => {
   const { email, password, ...rest } = payload;
 
-  // const isUserExist = await User.findOne({ email });
+  if (rest.role === Role.ADMIN) {
+    throw new AppError(httpStatus.BAD_REQUEST, "You cannot set ADMIN role");
+  }
 
-  // if (isUserExist) {
-  //   throw new AppError(httpStatus.BAD_REQUEST, "User already exist");
-  // }
+  const isUserExist = await User.findOne({ email });
 
-  const hashedPassword = await bcrypt.hash(password as string, 10);
+  if (isUserExist) {
+    throw new AppError(httpStatus.BAD_REQUEST, "User already exist");
+  }
+
+  const hashedPassword = await bcrypt.hash(
+    password as string,
+    Number(envVariables.BCRYPT_SALT_ROUND)
+  );
 
   const authProvider: IAuthProvider = {
     provider: "credentials",
