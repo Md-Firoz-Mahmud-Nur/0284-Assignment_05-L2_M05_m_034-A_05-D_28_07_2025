@@ -89,8 +89,20 @@ const getAllUsers = async () => {
   };
 };
 
+const getAllSender = async () => {
+  const users = await User.find({role: Role.SENDER});
+  const totalUsers = await User.countDocuments({ role: Role.SENDER });
+  return {
+    data: users,
+    meta: { total: totalUsers },
+  };
+};
+
+
+
 export const userService = {
   createUser,
   getAllUsers,
   updateUser,
+  getAllSender,
 };

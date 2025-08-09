@@ -12,16 +12,17 @@ router.post(
   validateRequest(createZodSchema),
   userControllers.createUser
 );
-router.get(
-  "/all-users",
-  checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
-  userControllers.getAllUsers
-);
+router.get("/all-users", checkAuth(Role.ADMIN), userControllers.getAllUsers);
 router.patch(
   "/:id",
   validateRequest(updateUserZodSchema),
   checkAuth(...Object.values(Role)),
   userControllers.updateUser
+);
+router.get(
+  "/all-sender",
+  checkAuth(...Object.values(Role)),
+  userControllers.getAllSender
 );
 
 export const userRoutes = router;
