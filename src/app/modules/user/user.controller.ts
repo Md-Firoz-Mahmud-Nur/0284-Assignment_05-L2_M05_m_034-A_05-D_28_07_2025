@@ -3,16 +3,29 @@ import httpStatus from "http-status-codes";
 import { JwtPayload } from "jsonwebtoken";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
+import { setAuthCookie } from "../../utils/setCookie";
+import { createUserTokens } from "../../utils/userTokens";
 import { userService } from "./user.service";
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const user = await userService.createUser(req.body);
 
+  const userTokens = createUserTokens(user);
+
+  setAuthCookie(res, userTokens);
+
+  const userWithoutPassword = user.toObject();
+  delete userWithoutPassword.password;
+
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.CREATED,
     message: "User Created Successfully",
-    data: user,
+    data: {
+      user: userWithoutPassword,
+      accessToken: userTokens.accessToken,
+      refreshToken: userTokens.refreshToken,
+    },
   });
 });
 
