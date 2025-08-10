@@ -42,8 +42,6 @@ export const checkAuth =
 
       req.user = verifyAccessToken;
 
-      console.log(authRoles)
-
       if (!authRoles.includes((verifyAccessToken as JwtPayload).role)) {
         throw new AppError(403, "You are not an admin");
       }

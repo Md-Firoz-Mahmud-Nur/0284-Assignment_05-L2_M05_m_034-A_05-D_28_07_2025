@@ -96,7 +96,6 @@ const getSingleUser = catchAsync(async (req: Request, res: Response) => {
 const getMe = catchAsync(
   async (req: Request, res: Response) => {
     const decodedToken = req.user as JwtPayload;
-    console.log(decodedToken)
     const user = await userService.getMe(decodedToken.userId as string);
 
     sendResponse(res, {

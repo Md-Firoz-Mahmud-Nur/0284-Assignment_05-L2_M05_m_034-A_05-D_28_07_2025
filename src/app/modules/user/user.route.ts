@@ -19,14 +19,10 @@ router.patch(
   checkAuth(...Object.values(Role)),
   userControllers.updateUser
 );
-router.get(
-  "/all-sender",
-  checkAuth(...Object.values(Role)),
-  userControllers.getAllSender
-);
+router.get("/all-sender", checkAuth(Role.ADMIN), userControllers.getAllSender);
 router.get(
   "/all-receiver",
-  checkAuth(...Object.values(Role)),
+  checkAuth(Role.ADMIN),
   userControllers.getAllReceiver
 );
 router.get("/me", checkAuth(...Object.values(Role)), userControllers.getMe);
