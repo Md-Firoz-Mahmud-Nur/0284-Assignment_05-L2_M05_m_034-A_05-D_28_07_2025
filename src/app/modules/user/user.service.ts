@@ -54,7 +54,7 @@ const updateUser = async (
       throw new AppError(httpStatus.FORBIDDEN, "You are not authorized");
     }
 
-    if (payload.role === Role.SUPER_ADMIN && decodedToken.role === Role.ADMIN) {
+    if (decodedToken.role === Role.ADMIN) {
       throw new AppError(httpStatus.FORBIDDEN, "You are not authorized");
     }
   }
@@ -121,6 +121,17 @@ const getSingleUser = async (decodedToken: JwtPayload, userId: string) => {
   return isUserExist;
 };
 
+const getMe = async (userId: string) => {
+  const isUserExist = await User.findById(userId).select("-password");
+
+  if (!isUserExist) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  return isUserExist;
+};
+
+
 export const userService = {
   createUser,
   getAllUsers,
@@ -128,4 +139,5 @@ export const userService = {
   getAllSender,
   getAllReceiver,
   getSingleUser,
+  getMe,
 };

@@ -93,6 +93,21 @@ const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getMe = catchAsync(
+  async (req: Request, res: Response) => {
+    const decodedToken = req.user as JwtPayload;
+    console.log(decodedToken)
+    const user = await userService.getMe(decodedToken.userId as string);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User Retrieved Successfully",
+      data: user,
+    });
+  }
+);
+
 export const userControllers = {
   createUser,
   getAllUsers,
@@ -100,4 +115,5 @@ export const userControllers = {
   getAllSender,
   getAllReceiver,
   getSingleUser,
+  getMe,
 };
