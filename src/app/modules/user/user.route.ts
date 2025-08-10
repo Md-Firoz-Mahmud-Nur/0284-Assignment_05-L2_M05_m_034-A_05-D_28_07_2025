@@ -24,5 +24,10 @@ router.get(
   checkAuth(...Object.values(Role)),
   userControllers.getAllSender
 );
+router.get(
+  "/all-receiver",
+  checkAuth(...Object.values(Role)),
+  userControllers.getAllReceiver
+);
 
 export const userRoutes = router;

@@ -68,9 +68,21 @@ const getAllSender = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAllReceiver = catchAsync(async (req: Request, res: Response) => {
+  const data = await userService.getAllReceiver();
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Receiver Retrieved Successfully",
+    data,
+  });
+});
+
 export const userControllers = {
   createUser,
   getAllUsers,
   updateUser,
   getAllSender,
+  getAllReceiver,
 };

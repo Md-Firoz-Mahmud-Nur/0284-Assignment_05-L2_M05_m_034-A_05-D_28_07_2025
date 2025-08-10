@@ -98,6 +98,15 @@ const getAllSender = async () => {
   };
 };
 
+const getAllReceiver = async () => {
+  const users = await User.find({ role: Role.RECEIVER });
+  const totalUsers = await User.countDocuments({ role: Role.RECEIVER });
+  return {
+    data: users,
+    meta: { total: totalUsers },
+  };
+};
+
 
 
 export const userService = {
@@ -105,4 +114,5 @@ export const userService = {
   getAllUsers,
   updateUser,
   getAllSender,
+  getAllReceiver,
 };
