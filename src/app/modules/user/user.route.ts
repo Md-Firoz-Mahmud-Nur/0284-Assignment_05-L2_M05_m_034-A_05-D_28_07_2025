@@ -29,5 +29,6 @@ router.get(
   checkAuth(...Object.values(Role)),
   userControllers.getAllReceiver
 );
+router.get("/:id", checkAuth(Role.ADMIN), userControllers.getSingleUser);
 
 export const userRoutes = router;

@@ -90,7 +90,7 @@ const getAllUsers = async () => {
 };
 
 const getAllSender = async () => {
-  const users = await User.find({role: Role.SENDER});
+  const users = await User.find({ role: Role.SENDER });
   const totalUsers = await User.countDocuments({ role: Role.SENDER });
   return {
     data: users,
@@ -107,7 +107,19 @@ const getAllReceiver = async () => {
   };
 };
 
+const getSingleUser = async (decodedToken: JwtPayload, userId: string) => {
+  if (decodedToken.role !== Role.ADMIN) {
+    throw new AppError(httpStatus.BAD_REQUEST, "You are not authorized");
+  }
 
+  const isUserExist = await User.findById(userId).select("-password");
+
+  if (!isUserExist) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  return isUserExist;
+};
 
 export const userService = {
   createUser,
@@ -115,4 +127,5 @@ export const userService = {
   updateUser,
   getAllSender,
   getAllReceiver,
+  getSingleUser,
 };
