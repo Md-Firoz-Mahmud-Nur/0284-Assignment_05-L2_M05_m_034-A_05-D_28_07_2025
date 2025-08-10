@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
+import dotenv from "dotenv";
 import { Server } from "http";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import app from "./app";
-dotenv.config({ quiet: true });
 import { envVariables } from "./app/config/env";
-import { seedSuperAdmin } from "./app/utils/seedSuperAdmin";
+import { seedAdmin } from "./app/utils/seedAdmin";
+dotenv.config({ quiet: true });
 
 const {
   MONGO_DB_USER,
@@ -36,7 +36,7 @@ const startServer = async () => {
 
 (async () => {
   await startServer();
-  await seedSuperAdmin();
+  await seedAdmin();
 })();
 
 process.on("SIGTERM", () => {
