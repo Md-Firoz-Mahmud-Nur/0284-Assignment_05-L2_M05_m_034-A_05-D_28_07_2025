@@ -35,6 +35,7 @@ const updateUser = catchAsync(async (req: Request, res: Response) => {
   const verifiedToken = req.user as JwtPayload;
 
   const payload = req.body;
+
   const user = await userService.updateUser(userId, payload, verifiedToken);
 
   sendResponse(res, {
@@ -93,19 +94,17 @@ const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getMe = catchAsync(
-  async (req: Request, res: Response) => {
-    const decodedToken = req.user as JwtPayload;
-    const user = await userService.getMe(decodedToken.userId as string);
+const getMe = catchAsync(async (req: Request, res: Response) => {
+  const decodedToken = req.user as JwtPayload;
+  const user = await userService.getMe(decodedToken.userId as string);
 
-    sendResponse(res, {
-      success: true,
-      statusCode: httpStatus.OK,
-      message: "User Retrieved Successfully",
-      data: user,
-    });
-  }
-);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "User Retrieved Successfully",
+    data: user,
+  });
+});
 
 export const userControllers = {
   createUser,

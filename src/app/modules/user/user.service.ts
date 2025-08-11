@@ -43,25 +43,28 @@ const updateUser = async (
   payload: Partial<IUser>,
   decodedToken: JwtPayload
 ) => {
-  const ifUserExist = await User.findById(userId);
+  const isUserExist = await User.findById(userId);
 
-  if (!ifUserExist) {
+  if (!isUserExist) {
     throw new AppError(httpStatus.NOT_FOUND, "User Not Found");
   }
 
-  if (payload.role) {
-    if (decodedToken.role === Role.USER || decodedToken.role === Role.GUIDE) {
-      throw new AppError(httpStatus.FORBIDDEN, "You are not authorized");
-    }
-
-    if (decodedToken.role === Role.ADMIN) {
-      throw new AppError(httpStatus.FORBIDDEN, "You are not authorized");
+  if (payload?.isBlocked !== undefined || payload?.role !== undefined || payload?.isVerified !== undefined || payload?.isDeleted !== undefined) {
+    if (decodedToken.role !== Role.ADMIN) {
+      throw new AppError(httpStatus.BAD_REQUEST, "You are not an admin");
     }
   }
 
-  if (payload.isActive || payload.isDeleted || payload.isVerified) {
-    if (decodedToken.role === Role.USER || decodedToken.role === Role.GUIDE) {
-      throw new AppError(httpStatus.FORBIDDEN, "You are not authorized");
+  if (payload) {
+    if (
+      // decodedToken.role === Role.ADMIN &&
+      // isUserExist._id !== decodedToken.userId
+      !isUserExist._id.equals(decodedToken.userId)
+    ) {
+      throw new AppError(
+        httpStatus.FORBIDDEN,
+        "You can not change others information"
+      );
     }
   }
 
@@ -130,7 +133,6 @@ const getMe = async (userId: string) => {
 
   return isUserExist;
 };
-
 
 export const userService = {
   createUser,

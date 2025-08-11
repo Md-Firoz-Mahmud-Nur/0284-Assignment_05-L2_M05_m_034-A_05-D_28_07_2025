@@ -9,11 +9,25 @@ export const handlerZodError = (err: ZodError): TGenericErrorResponse => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   err.issues.forEach((error: any) => {
-    errorSources.push({
-      // path: error.path[error.path.length - 1],
-      path: error.path.length > 1 && error.path.reverse().join(" inside "),
-      message: error.message,
-    });
+    if (error.code === "unrecognized_keys") {
+      if (error.keys.length === 1) {
+        errorSources.push({
+          path: error.path.join("."),
+          message: `Cannot update ${error.keys[0]}`,
+        });
+      } else if (error.keys.length > 1) {
+        errorSources.push({
+          path: error.path.join("."),
+          message: `Cannot update ${error.keys.join(", ")}`,
+        });
+      } else {
+        errorSources.push({
+          // path: error.path[error.path.length - 1],
+          path: error.path.length > 1 && error.path.reverse().join(" inside "),
+          message: error.message,
+        });
+      }
+    }
   });
 
   return {
