@@ -55,10 +55,8 @@ const updateUser = async (
     }
   }
 
-  if (payload) {
+  if (payload?.name !== undefined || payload?.picture !== undefined) {
     if (
-      // decodedToken.role === Role.ADMIN &&
-      // isUserExist._id !== decodedToken.userId
       !isUserExist._id.equals(decodedToken.userId)
     ) {
       throw new AppError(
