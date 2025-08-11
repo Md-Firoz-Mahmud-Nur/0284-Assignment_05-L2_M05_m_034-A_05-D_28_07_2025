@@ -49,28 +49,24 @@ const updateUser = async (
     throw new AppError(httpStatus.NOT_FOUND, "User Not Found");
   }
 
-  if (payload?.isBlocked !== undefined || payload?.role !== undefined || payload?.isVerified !== undefined || payload?.isDeleted !== undefined) {
+  if (
+    payload?.isBlocked !== undefined ||
+    payload?.role !== undefined ||
+    payload?.isVerified !== undefined ||
+    payload?.isDeleted !== undefined
+  ) {
     if (decodedToken.role !== Role.ADMIN) {
       throw new AppError(httpStatus.BAD_REQUEST, "You are not an admin");
     }
   }
 
   if (payload?.name !== undefined || payload?.picture !== undefined) {
-    if (
-      !isUserExist._id.equals(decodedToken.userId)
-    ) {
+    if (!isUserExist._id.equals(decodedToken.userId)) {
       throw new AppError(
         httpStatus.FORBIDDEN,
         "You can not change others information"
       );
     }
-  }
-
-  if (payload.password) {
-    payload.password = await bcrypt.hash(
-      payload.password,
-      envVariables.BCRYPT_SALT_ROUND
-    );
   }
 
   const newUpdatedUser = await User.findByIdAndUpdate(userId, payload, {

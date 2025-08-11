@@ -43,20 +43,6 @@ export const updateUserZodSchema = z
 
     picture: z.string({ message: "Picture must be a string" }).optional(),
 
-    password: z
-      .string({ invalid_type_error: "Password must be string" })
-      .min(8, { message: "Password must be at least 8 characters long." })
-      .regex(/^(?=.*[A-Z])/, {
-        message: "Password must contain at least 1 uppercase letter.",
-      })
-      .regex(/^(?=.*[!@#$%^&*])/, {
-        message: "Password must contain at least 1 special character.",
-      })
-      .regex(/^(?=.*\d)/, {
-        message: "Password must contain at least 1 number.",
-      })
-      .optional(),
-
     isDeleted: z
       .boolean({ invalid_type_error: "isDeleted must be true or false" })
       .optional(),
