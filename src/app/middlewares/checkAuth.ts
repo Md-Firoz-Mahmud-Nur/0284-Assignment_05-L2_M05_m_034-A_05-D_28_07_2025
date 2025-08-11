@@ -5,14 +5,22 @@ import { envVariables } from "../config/env";
 import AppError from "../errorHelpers/AppError";
 import { User } from "../modules/user/user.model";
 import { verifyToken } from "../utils/jwt";
-
+import { setAuthCookie } from "../utils/setCookie";
+import { createNewAccessTokenWithRefreshToken } from "../utils/userTokens";
 export const checkAuth =
   (...authRoles: string[]) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const accessToken = req.cookies.accessToken;
+      let accessToken = req.cookies.accessToken;
       if (!accessToken) {
-        throw new AppError(403, "Access token not found");
+        const refreshToken = req.cookies.refreshToken;
+        if (refreshToken) {
+          const createAccessTokenWithRefresh = await createNewAccessTokenWithRefreshToken(refreshToken);
+          setAuthCookie(res, { accessToken: createAccessTokenWithRefresh });
+          accessToken = createAccessTokenWithRefresh;
+        } else {
+          throw new AppError(403, "Access token not found");
+        }
       }
 
       const verifyAccessToken = verifyToken(
