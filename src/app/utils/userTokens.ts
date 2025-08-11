@@ -1,10 +1,10 @@
+import httpStatus from "http-status-codes";
 import { JwtPayload } from "jsonwebtoken";
 import { envVariables } from "../config/env";
-import { IsActive, IUser } from "../modules/user/user.interface";
-import { generateToken, verifyToken } from "./jwt";
-import { User } from "../modules/user/user.model";
 import AppError from "../errorHelpers/AppError";
-import httpStatus from "http-status-codes";
+import { IUser } from "../modules/user/user.interface";
+import { User } from "../modules/user/user.model";
+import { generateToken, verifyToken } from "./jwt";
 
 export const createUserTokens = (user: Partial<IUser>) => {
   const jwtPayload = {
@@ -40,16 +40,6 @@ export const createNewAccessTokenWithRefreshToken = async (
 
   if (!isUserExist) {
     throw new AppError(httpStatus.BAD_REQUEST, "User does not exist");
-  }
-
-  if (
-    isUserExist.isActive === IsActive.BLOCKED ||
-    isUserExist.isActive === IsActive.INACTIVE
-  ) {
-    throw new AppError(
-      httpStatus.BAD_REQUEST,
-      `User is ${isUserExist.isActive}`
-    );
   }
 
   if (isUserExist.isDeleted) {
