@@ -4,6 +4,7 @@ import AppError from "../../errorHelpers/AppError";
 import { Role } from "../user/user.interface";
 import { User } from "../user/user.model";
 import { IParcel } from "./parcel.interface";
+import { Parcel } from "./parcel.model";
 
 const createParcel = async (
   payload: Partial<IParcel>,
@@ -45,6 +46,11 @@ const createParcel = async (
 
   console.log("decodedToken", decodedToken);
   console.log(payload);
+
+  const parcel = await Parcel.create(payload);
+  console.log(parcel);
+
+  return parcel;
 };
 
 export const ParcelService = { createParcel };
