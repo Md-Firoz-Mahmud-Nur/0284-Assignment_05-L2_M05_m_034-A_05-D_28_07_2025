@@ -9,6 +9,24 @@ export const handlerZodError = (err: ZodError): TGenericErrorResponse => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   err.issues.forEach((error: any) => {
+    if (error.code === "invalid_type") {
+      errorSources.push({
+        path: error.path.join("."),
+        message: error.message,
+      });
+    }
+    if (error.code === "too_big") {
+      errorSources.push({
+        path: error.path.join("."),
+        message: error.message,
+      });
+    }
+    if (error.code === "too_small") {
+      errorSources.push({
+        path: error.path.join("."),
+        message: error.message,
+      });
+    }
     if (error.code === "unrecognized_keys") {
       if (error.keys.length === 1) {
         errorSources.push({
