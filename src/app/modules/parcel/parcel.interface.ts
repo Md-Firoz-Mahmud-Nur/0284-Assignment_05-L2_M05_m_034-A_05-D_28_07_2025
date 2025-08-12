@@ -5,12 +5,14 @@ export interface IParcel {
   trackingId: string;
   type: string;
   weight: number;
-  sender: string;
-  receiver: string;
+  sender: Types.ObjectId;
+  receiver: Types.ObjectId;
   address: string;
   fee: number;
+  pickupAddress: string;
+  deliveryAddress: string;
   deliveryDate: Date;
-  status: string;
+  status: "Requested" | "Approved" | "Dispatched" | "In Transit" | "Delivered";
   createdAt?: Date;
   updatedAt?: Date;
 }
