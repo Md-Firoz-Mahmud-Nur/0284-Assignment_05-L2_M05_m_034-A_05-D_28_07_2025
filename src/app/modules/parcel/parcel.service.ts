@@ -23,9 +23,27 @@ const createParcel = async (
     throw new AppError(httpStatus.BAD_REQUEST, "You are not a sender");
   }
 
+  const isUserReceiverExist = await User.findById(payload.receiver);
+
+  if (!isUserReceiverExist) {
+    throw new AppError(httpStatus.NOT_FOUND, "Receiver not found");
+  }
+
+  if (isUserReceiverExist.role !== Role.RECEIVER) {
+    throw new AppError(httpStatus.BAD_REQUEST, "Enter user with receiver role");
+  }
+
+  const date = new Date();
+  date.setDate(date.getDate() + 3);
+  payload.deliveryDate = date;
+
+  payload.status = "Requested";
+
+  payload.trackingId = "will generate later";
+
+  payload.fee = 170;
 
   console.log("decodedToken", decodedToken);
-  console.log("create parcel hit \n");
   console.log(payload);
 };
 
