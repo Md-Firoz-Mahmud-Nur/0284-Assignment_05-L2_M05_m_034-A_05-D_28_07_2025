@@ -41,8 +41,22 @@ const getSingleParcel = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getMyParcel = catchAsync(async (req: Request, res: Response) => {
+  const decodedToken = req.user;
+
+  const parcel = await ParcelService.getMyParcel(decodedToken);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Parcel Retrieved Successfully",
+    data: parcel,
+  });
+});
+
 export const parcelController = {
   createParcel,
   getAllParcel,
   getSingleParcel,
+  getMyParcel,
 };

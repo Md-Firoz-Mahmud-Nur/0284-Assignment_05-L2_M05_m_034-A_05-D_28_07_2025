@@ -90,4 +90,14 @@ const getSingleParcel = async (
   return parcel;
 };
 
-export const ParcelService = { createParcel, getAllParcel, getSingleParcel };
+const getMyParcel = async (decodedToken: JwtPayload) => {
+  const parcel = await Parcel.find({ sender: decodedToken.userId });
+  return parcel;
+};
+
+export const ParcelService = {
+  createParcel,
+  getAllParcel,
+  getSingleParcel,
+  getMyParcel,
+};

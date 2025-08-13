@@ -15,7 +15,8 @@ export const checkAuth =
       if (!accessToken) {
         const refreshToken = req.cookies.refreshToken;
         if (refreshToken) {
-          const createAccessTokenWithRefresh = await createNewAccessTokenWithRefreshToken(refreshToken);
+          const createAccessTokenWithRefresh =
+            await createNewAccessTokenWithRefreshToken(refreshToken);
           setAuthCookie(res, { accessToken: createAccessTokenWithRefresh });
           accessToken = createAccessTokenWithRefresh;
         } else {
@@ -51,7 +52,7 @@ export const checkAuth =
       req.user = verifyAccessToken;
 
       if (!authRoles.includes((verifyAccessToken as JwtPayload).role)) {
-        throw new AppError(403, "You are not an admin");
+        throw new AppError(403, "You are not authorized");
       }
 
       next();
