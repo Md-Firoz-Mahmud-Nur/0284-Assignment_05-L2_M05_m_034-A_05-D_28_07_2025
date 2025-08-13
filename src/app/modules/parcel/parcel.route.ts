@@ -16,4 +16,10 @@ router.post(
 
 router.get("/all-parcel", checkAuth(Role.ADMIN), parcelController.getAllParcel);
 
+router.get(
+  "/:trackingId",
+  checkAuth(...Object.values(Role)),
+  parcelController.getSingleParcel
+);
+
 export const ParcelRoutes = router;

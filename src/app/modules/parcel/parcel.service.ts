@@ -59,4 +59,9 @@ const getAllParcel = async () => {
   };
 };
 
-export const ParcelService = { createParcel, getAllParcel };
+const getSingleParcel = async (trackingId: string) => {
+  const parcel = await Parcel.findOne({ trackingId });
+  return parcel;
+};
+
+export const ParcelService = { createParcel, getAllParcel, getSingleParcel };
