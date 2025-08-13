@@ -18,12 +18,22 @@ router.get("/all-parcel", checkAuth(Role.ADMIN), parcelController.getAllParcel);
 
 router.get("/mine", checkAuth(Role.SENDER), parcelController.getMyParcel);
 
-router.get("/incoming", checkAuth(Role.RECEIVER), parcelController.incomingParcel);
+router.get(
+  "/incoming",
+  checkAuth(Role.RECEIVER),
+  parcelController.incomingParcel
+);
 
 router.get(
   "/:trackingId",
   checkAuth(...Object.values(Role)),
   parcelController.getSingleParcel
+);
+
+router.patch(
+  "/:trackingId",
+  checkAuth(...Object.values(Role)),
+  parcelController.updateParcel
 );
 
 export const ParcelRoutes = router;

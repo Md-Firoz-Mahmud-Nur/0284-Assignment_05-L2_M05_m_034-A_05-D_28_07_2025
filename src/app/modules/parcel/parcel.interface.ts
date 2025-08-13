@@ -12,7 +12,13 @@ export interface IParcel {
   pickupAddress: string;
   deliveryAddress: string;
   deliveryDate: Date;
-  status: "Requested" | "Approved" | "Dispatched" | "In Transit" | "Delivered";
+  status:
+    | "Requested"
+    | "Approved"
+    | "Dispatched"
+    | "In Transit"
+    | "Delivered"
+    | "Cancelled";
   createdAt?: Date;
   updatedAt?: Date;
 }

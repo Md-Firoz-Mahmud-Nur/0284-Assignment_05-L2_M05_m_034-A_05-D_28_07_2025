@@ -3,6 +3,7 @@ import httpStatus from "http-status-codes";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { ParcelService } from "./parcel.service";
+import { IParcel } from "./parcel.interface";
 
 const createParcel = catchAsync(async (req: Request, res: Response) => {
   const parcel = await ParcelService.createParcel(req.body, req.user);
@@ -67,10 +68,32 @@ const incomingParcel = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateParcel = catchAsync(async (req: Request, res: Response) => {
+  const decodedToken = req.user;
+  const trackingId = req.params.trackingId;
+  const payload = req.body;
+
+  const parcel = await ParcelService.updateParcel(
+    trackingId,
+    payload as Partial<IParcel>,
+    decodedToken
+  );
+
+  console.log("parcel \n", parcel);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Parcel Retrieved Successfully",
+    data: parcel,
+  });
+});
+
 export const parcelController = {
   createParcel,
   getAllParcel,
   getSingleParcel,
   getMyParcel,
   incomingParcel,
+  updateParcel,
 };

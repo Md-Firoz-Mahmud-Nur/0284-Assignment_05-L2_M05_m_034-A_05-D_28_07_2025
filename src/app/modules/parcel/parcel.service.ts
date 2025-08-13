@@ -110,10 +110,50 @@ const incomingParcel = async (decodedToken: JwtPayload) => {
   };
 };
 
+const updateParcel = async (
+  trackingId: string,
+  payload: Partial<IParcel>,
+  decodedToken: JwtPayload
+) => {
+  const isParcelExits = await Parcel.findOne({ trackingId });
+
+  if (!isParcelExits) {
+    throw new AppError(httpStatus.NOT_FOUND, "Parcel not found");
+  }
+
+  console.log(decodedToken);
+  console.log(isParcelExits);
+  console.log(payload);
+
+  if (decodedToken.role === Role.SENDER) {
+    if (isParcelExits.sender.toString() !== decodedToken.userId) {
+      throw new AppError(
+        httpStatus.UNAUTHORIZED,
+        "You can update only your parcel"
+      );
+    }
+
+    if (isParcelExits.status !== "Requested") {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        "Can not update Parcel after approved"
+      );
+    }
+
+    if (payload.status !== "Cancelled") {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        `You can not set ${payload.status}`
+      );
+    }
+  }
+};
+
 export const ParcelService = {
   createParcel,
   getAllParcel,
   getSingleParcel,
   getMyParcel,
   incomingParcel,
+  updateParcel,
 };
