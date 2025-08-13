@@ -92,7 +92,22 @@ const getSingleParcel = async (
 
 const getMyParcel = async (decodedToken: JwtPayload) => {
   const parcel = await Parcel.find({ sender: decodedToken.userId });
-  return parcel;
+  return {
+    data: parcel,
+    meta: {
+      total: parcel.length,
+    },
+  };
+};
+
+const incomingParcel = async (decodedToken: JwtPayload) => {
+  const parcel = await Parcel.find({ receiver: decodedToken.userId });
+  return {
+    data: parcel,
+    meta: {
+      total: parcel.length,
+    },
+  };
 };
 
 export const ParcelService = {
@@ -100,4 +115,5 @@ export const ParcelService = {
   getAllParcel,
   getSingleParcel,
   getMyParcel,
+  incomingParcel,
 };

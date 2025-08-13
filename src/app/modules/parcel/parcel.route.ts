@@ -18,6 +18,8 @@ router.get("/all-parcel", checkAuth(Role.ADMIN), parcelController.getAllParcel);
 
 router.get("/mine", checkAuth(Role.SENDER), parcelController.getMyParcel);
 
+router.get("/incoming", checkAuth(Role.RECEIVER), parcelController.incomingParcel);
+
 router.get(
   "/:trackingId",
   checkAuth(...Object.values(Role)),
