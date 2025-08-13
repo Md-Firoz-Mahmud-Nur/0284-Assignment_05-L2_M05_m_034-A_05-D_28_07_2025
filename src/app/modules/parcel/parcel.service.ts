@@ -59,8 +59,34 @@ const getAllParcel = async () => {
   };
 };
 
-const getSingleParcel = async (trackingId: string) => {
+const getSingleParcel = async (
+  trackingId: string,
+  decodedToken: JwtPayload
+) => {
   const parcel = await Parcel.findOne({ trackingId });
+
+  if (!parcel) {
+    throw new AppError(httpStatus.NOT_FOUND, "Parcel not found");
+  }
+
+  if (decodedToken.role === Role.SENDER) {
+    if (parcel.sender.toString() !== decodedToken.userId) {
+      throw new AppError(
+        httpStatus.UNAUTHORIZED,
+        "You can see only your parcel"
+      );
+    }
+  }
+
+  if (decodedToken.role === Role.RECEIVER) {
+    if (parcel.receiver.toString() !== decodedToken.userId) {
+      throw new AppError(
+        httpStatus.UNAUTHORIZED,
+        "You can see only your parcel"
+      );
+    }
+  }
+
   return parcel;
 };
 

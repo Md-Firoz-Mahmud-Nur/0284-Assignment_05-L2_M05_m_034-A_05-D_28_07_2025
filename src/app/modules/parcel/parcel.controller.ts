@@ -28,7 +28,10 @@ const getAllParcel = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getSingleParcel = catchAsync(async (req: Request, res: Response) => {
-  const parcel = await ParcelService.getSingleParcel(req.params.trackingId);
+  const trackingId = req.params.trackingId;
+  const decodedToken = req.user;
+
+  const parcel = await ParcelService.getSingleParcel(trackingId, decodedToken);
 
   sendResponse(res, {
     success: true,
