@@ -41,7 +41,6 @@ const createParcel = async (
 
   payload.status = "Requested";
 
-  // payload.trackingId = "will generate later";
   payload.trackingId = await generateTrackingId();
 
   payload.fee = 170;
@@ -50,4 +49,14 @@ const createParcel = async (
   return parcel;
 };
 
-export const ParcelService = { createParcel };
+const getAllParcel = async () => {
+  const parcels = await Parcel.find({});
+  return {
+    data: parcels,
+    meta: {
+      total: parcels.length,
+    },
+  };
+};
+
+export const ParcelService = { createParcel, getAllParcel };

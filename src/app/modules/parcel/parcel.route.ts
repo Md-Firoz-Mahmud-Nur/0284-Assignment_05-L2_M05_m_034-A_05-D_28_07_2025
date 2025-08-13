@@ -14,4 +14,6 @@ router.post(
   parcelController.createParcel
 );
 
+router.get("/all-parcel", checkAuth(Role.ADMIN), parcelController.getAllParcel);
+
 export const ParcelRoutes = router;
