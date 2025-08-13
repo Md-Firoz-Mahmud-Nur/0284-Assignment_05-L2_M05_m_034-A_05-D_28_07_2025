@@ -1,5 +1,19 @@
 import { Types } from "mongoose";
 
+export interface IStatusLog {
+  _id?: Types.ObjectId;
+  status:
+    | "Requested"
+    | "Approved"
+    | "Dispatched"
+    | "In Transit"
+    | "Delivered"
+    | "Cancelled";
+  timestamp: Date;
+  updatedBy: Types.ObjectId;
+  note?: string;
+}
+
 export interface IParcel {
   _id?: Types.ObjectId;
   trackingId: string;
@@ -19,6 +33,7 @@ export interface IParcel {
     | "In Transit"
     | "Delivered"
     | "Cancelled";
+  statusLogs: IStatusLog[];
   createdAt?: Date;
   updatedAt?: Date;
 }

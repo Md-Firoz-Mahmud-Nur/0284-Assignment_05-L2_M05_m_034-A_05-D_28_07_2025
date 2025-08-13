@@ -1,5 +1,26 @@
 import { model, Schema } from "mongoose";
-import { IParcel } from "./parcel.interface";
+import { IParcel, IStatusLog } from "./parcel.interface";
+
+const StatusLogSchema = new Schema<IStatusLog>(
+  {
+    status: {
+      type: String,
+      enum: [
+        "Requested",
+        "Approved",
+        "Dispatched",
+        "In Transit",
+        "Delivered",
+        "Cancelled",
+      ],
+      required: true,
+    },
+    timestamp: { type: Date, required: true, default: Date.now },
+    updatedBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    note: { type: String },
+  },
+  { _id: true, versionKey: false }
+);
 
 const ParcelSchema = new Schema<IParcel>(
   {
@@ -18,6 +39,7 @@ const ParcelSchema = new Schema<IParcel>(
       required: true,
       default: "Requested",
     },
+    statusLogs: [StatusLogSchema],
   },
   {
     timestamps: true,
