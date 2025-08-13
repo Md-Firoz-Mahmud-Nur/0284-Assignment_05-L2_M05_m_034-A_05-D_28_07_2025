@@ -1,6 +1,7 @@
 import httpStatus from "http-status-codes";
 import { JwtPayload } from "jsonwebtoken";
 import AppError from "../../errorHelpers/AppError";
+import { generateTrackingId } from "../../utils/getTrackingId";
 import { Role } from "../user/user.interface";
 import { User } from "../user/user.model";
 import { IParcel } from "./parcel.interface";
@@ -40,16 +41,12 @@ const createParcel = async (
 
   payload.status = "Requested";
 
-  payload.trackingId = "will generate later";
+  // payload.trackingId = "will generate later";
+  payload.trackingId = await generateTrackingId();
 
   payload.fee = 170;
 
-  console.log("decodedToken", decodedToken);
-  console.log(payload);
-
   const parcel = await Parcel.create(payload);
-  console.log(parcel);
-
   return parcel;
 };
 
