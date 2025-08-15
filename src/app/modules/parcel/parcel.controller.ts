@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import httpStatus from "http-status-codes";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
-import { ParcelService } from "./parcel.service";
 import { IParcel } from "./parcel.interface";
+import { ParcelService } from "./parcel.service";
 
 const createParcel = catchAsync(async (req: Request, res: Response) => {
   const parcel = await ParcelService.createParcel(req.body, req.user);
@@ -46,6 +46,8 @@ const getMyParcel = catchAsync(async (req: Request, res: Response) => {
   const decodedToken = req.user;
 
   const parcel = await ParcelService.getMyParcel(decodedToken);
+
+  console.log("parcel \n", parcel);
 
   sendResponse(res, {
     success: true,

@@ -121,8 +121,6 @@ const updateParcel = async (
     throw new AppError(httpStatus.NOT_FOUND, "Parcel not found");
   }
 
-  console.log(decodedToken);
-  console.log(isParcelExits);
   console.log(payload);
 
   if (decodedToken.role === Role.SENDER) {
@@ -141,6 +139,29 @@ const updateParcel = async (
     }
 
     if (payload.status !== "Cancelled") {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        `You can not set ${payload.status}`
+      );
+    }
+  }
+
+  if (decodedToken.role === Role.RECEIVER) {
+    if (isParcelExits.receiver.toString() !== decodedToken.userId) {
+      throw new AppError(
+        httpStatus.UNAUTHORIZED,
+        "You can update only your parcel"
+      );
+    }
+
+    if (isParcelExits.status !== "Requested") {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        "Can not update Parcel after approved"
+      );
+    }
+
+    if (payload.status !== "Delivered") {
       throw new AppError(
         httpStatus.BAD_REQUEST,
         `You can not set ${payload.status}`
