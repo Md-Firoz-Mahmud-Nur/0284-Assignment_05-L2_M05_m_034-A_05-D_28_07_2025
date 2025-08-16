@@ -35,7 +35,7 @@ const ParcelSchema = new Schema<IParcel>(
     deliveryDate: { type: Date, required: true },
     status: {
       type: String,
-      enum: ["Requested", "Approved", "Dispatched", "In Transit", "Delivered"],
+      enum: ["Requested", "Approved", "Dispatched", "In Transit", "Delivered", "Cancelled"],
       required: true,
       default: "Requested",
     },

@@ -168,6 +168,13 @@ const updateParcel = async (
       );
     }
   }
+
+  const parcel = await Parcel.findOneAndUpdate({ trackingId }, payload, {
+    new: true,
+    runValidators: true,
+  });
+  
+  return parcel;
 };
 
 export const ParcelService = {

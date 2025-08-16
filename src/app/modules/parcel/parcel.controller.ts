@@ -47,8 +47,6 @@ const getMyParcel = catchAsync(async (req: Request, res: Response) => {
 
   const parcel = await ParcelService.getMyParcel(decodedToken);
 
-  console.log("parcel \n", parcel);
-
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
@@ -80,8 +78,6 @@ const updateParcel = catchAsync(async (req: Request, res: Response) => {
     payload as Partial<IParcel>,
     decodedToken
   );
-
-  console.log("parcel \n", parcel);
 
   sendResponse(res, {
     success: true,
