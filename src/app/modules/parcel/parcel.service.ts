@@ -121,8 +121,6 @@ const updateParcel = async (
     throw new AppError(httpStatus.NOT_FOUND, "Parcel not found");
   }
 
-  console.log(payload);
-
   if (decodedToken.role === Role.SENDER) {
     if (isParcelExits.sender.toString() !== decodedToken.userId) {
       throw new AppError(
@@ -173,7 +171,7 @@ const updateParcel = async (
     new: true,
     runValidators: true,
   });
-  
+
   return parcel;
 };
 
