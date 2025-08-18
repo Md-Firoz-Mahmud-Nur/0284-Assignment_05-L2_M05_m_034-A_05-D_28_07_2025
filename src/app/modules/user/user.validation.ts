@@ -4,7 +4,11 @@ import { Role } from "./user.interface";
 export const createZodSchema = z.object({
   name: z
     .string({
-      invalid_type_error: "Name must be string",
+      error: (err) => {
+        if (err.code === "invalid_type") {
+          return "Name must be string";
+        }
+      },
     })
     .min(3, { message: "Name too short, enter at least 3 character" })
     .max(50, { message: "Name too long, enter at most 50 character" }),
@@ -16,7 +20,13 @@ export const createZodSchema = z.object({
     .max(100, { message: "Email cannot exceed 100 characters." }),
 
   password: z
-    .string({ invalid_type_error: "Password must be string" })
+    .string({
+      error: (err) => {
+        if (err.code === "invalid_type") {
+          return "Password must be string";
+        }
+      },
+    })
     .min(8, { message: "Password must be at least 8 characters long." })
     .regex(/^(?=.*[A-Z])/, {
       message: "Password must contain at least 1 uppercase letter.",
@@ -34,7 +44,13 @@ export const createZodSchema = z.object({
 export const updateUserZodSchema = z
   .object({
     name: z
-      .string({ invalid_type_error: "Name must be string" })
+      .string({
+        error: (err) => {
+          if (err.code === "invalid_type") {
+            return "Name must be string";
+          }
+        },
+      })
       .min(3, { message: "Name must be at least 3 characters long." })
       .max(50, { message: "Name cannot exceed 50 characters." })
       .optional(),
@@ -44,13 +60,31 @@ export const updateUserZodSchema = z
     picture: z.string({ message: "Picture must be a string" }).optional(),
 
     isDeleted: z
-      .boolean({ invalid_type_error: "isDeleted must be true or false" })
+      .boolean({
+        error: (err) => {
+          if (err.code === "invalid_type") {
+            return "isDeleted must be true or false";
+          }
+        },
+      })
       .optional(),
     isVerified: z
-      .boolean({ invalid_type_error: "isVerified must be true or false" })
+      .boolean({
+        error: (err) => {
+          if (err.code === "invalid_type") {
+            return "isVerified must be true or false";
+          }
+        },
+      })
       .optional(),
     isBlocked: z
-      .boolean({ invalid_type_error: "isVerified must be true or false" })
+      .boolean({
+        error: (err) => {
+          if (err.code === "invalid_type") {
+            return "isBlocked must be true or false";
+          }
+        },
+      })
       .optional(),
   })
   .strict();
