@@ -3,7 +3,10 @@ import { checkAuth } from "../../middlewares/checkAuth";
 import { validateRequest } from "../../middlewares/validateRequest";
 import { Role } from "../user/user.interface";
 import { parcelController } from "./parcel.controller";
-import { createParcelZodSchema } from "./parcel.validation";
+import {
+  createParcelZodSchema,
+  updateParcelZodSchema,
+} from "./parcel.validation";
 
 const router = Router();
 
@@ -32,6 +35,7 @@ router.get(
 
 router.patch(
   "/:trackingId",
+  validateRequest(updateParcelZodSchema),
   checkAuth(...Object.values(Role)),
   parcelController.updateParcel
 );
