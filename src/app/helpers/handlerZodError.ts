@@ -9,6 +9,12 @@ export const handlerZodError = (err: ZodError): TGenericErrorResponse => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   err.issues.forEach((error: any) => {
+    if (error.code === "invalid_value") {
+      errorSources.push({
+        path: error.path.join("."),
+        message: error.message,
+      });
+    }
     if (error.code === "invalid_type") {
       errorSources.push({
         path: error.path.join("."),

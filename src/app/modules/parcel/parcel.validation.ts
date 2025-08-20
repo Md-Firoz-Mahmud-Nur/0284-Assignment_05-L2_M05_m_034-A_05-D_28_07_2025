@@ -69,7 +69,8 @@ export const updateParcelZodSchema = z
       .min(4, {
         message: "Pickup address must be at least 4 characters long.",
       })
-      .max(100, { message: "Pickup address cannot exceed 100 characters." }).optional(),
+      .max(100, { message: "Pickup address cannot exceed 100 characters." })
+      .optional(),
     deliveryAddress: z
       .string({
         error: "Delivery address is required as string",
@@ -77,21 +78,35 @@ export const updateParcelZodSchema = z
       .min(4, {
         message: "Delivery address must be at least 4 characters long.",
       })
-      .max(100, { message: "Delivery address cannot exceed 100 characters." }).optional(),
-    weight: z.number({
-      error: (err) => {
-        if (err.code === "invalid_type") {
-          return "Weight must be a number";
+      .max(100, { message: "Delivery address cannot exceed 100 characters." })
+      .optional(),
+    weight: z
+      .number({
+        error: (err) => {
+          if (err.code === "invalid_type") {
+            return "Weight must be a number";
+          }
+        },
+      })
+      .optional(),
+    status: z
+      .enum(
+        [
+          "Requested",
+          "Approved",
+          "Dispatched",
+          "In Transit",
+          "Delivered",
+          "Cancelled",
+        ],
+        {
+          error: (err) => {
+            if (err.code === "invalid_value") {
+              return "Enter correct status";
+            }
+          },
         }
-      },
-    }).optional(),
-    status: z.enum([
-      "Requested",
-      "Approved",
-      "Dispatched",
-      "In Transit",
-      "Delivered",
-      "Cancelled",
-    ]).optional(),
+      )
+      .optional(),
   })
   .strict();
