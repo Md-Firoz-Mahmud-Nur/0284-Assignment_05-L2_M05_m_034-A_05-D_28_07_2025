@@ -99,3 +99,48 @@ src/
 | PATCH  | `/api/v1/parcel/:trackingId`   | Update parcel status              | Admin & Sender          |
 
 --- 
+
+## Rules
+
+- Senders cannot cancel a approved parcel
+- Receivers can only mark delivered after `In Transit`
+- status flow is restricted
+
+---
+
+## Run Locally
+
+### 1. Clone & Install
+
+```bash
+git clone https://github.com/Md-Firoz-Mahmud-Nur/0284-Assignment_05-L2_M05_m_034-A_05-D_28_07_2025.git
+cd 0284-Assignment_05-L2_M05_m_034-A_05-D_28_07_2025
+npm i
+```
+
+### 2. Create `.env` File
+
+```bash
+MONGO_DB_USER=
+MONGO_DB_SECRET_KEY=
+MONGO_DB_URI_SECRET_KEY=
+PORT=5000
+NODE_ENV=development
+JWT_ACCESS_SECRET=
+JWT_ACCESS_EXPIRE=
+JWT_REFRESH_SECRET=
+JWT_REFRESH_EXPIRE=
+BCRYPT_SALT_ROUND=
+ADMIN_EMAIL=
+ADMIN_PASSWORD=
+EXPRESS_SESSION_SECRET=
+FRONTEND_URL=http://localhost:5173
+```
+
+### 3. Run the API
+
+```bash
+npm run dev
+```
+
+---
