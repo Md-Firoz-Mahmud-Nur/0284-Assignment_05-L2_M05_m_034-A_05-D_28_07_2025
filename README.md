@@ -55,3 +55,47 @@ src/
 ```
 
 ---
+
+## Role-Based Access
+
+- **Admin**: Full access – view, block, update users and parcels
+- **Sender**: Create, cancel, and track parcels they created
+- **Receiver**: View assigned parcels and mark as delivered
+
+---
+
+## API Endpoints
+
+### Auth Routes
+
+| Method | Endpoint                       | Description                   | Access        | 
+|--------|--------------------------------|-------------------------------|---------------|
+| POST   | `/api/v1/auth/login`           | login                         | Public        |
+| POST   | `/api/v1/auth/refresh-token`   | Get new access token          | Public        |
+| POST   | `/api/v1/auth/logout`          | logout                        | Authenticated |
+| POST   | `/api/v1/auth/reset-password`  | Change user password          | Authenticated |
+
+### User Routes
+
+| Method | Endpoint                       | Description                   | Access        |
+|--------|--------------------------------|-------------------------------|---------------|
+| POST   | `/api/v1/user/register`        | Register a new user           | Public        |
+| GET    | `/api/v1/user/all-users`       | Get all users                 | Admin         |
+| GET    | `/api/v1/user/all-sender`      | Get all sender                | Admin         |
+| GET    | `/api/v1/user/all-receiver`    | Get all receiver              | Admin         |
+| GET    | `/api/v1/user/:id`             | Get a single user by ID       | Admin         |
+| GET    | `/api/v1/user/me`              | Get current logged-in user    | Authenticated |
+| PATCH  | `/api/v1/user/:id`             | Update user by ID             | Authenticated |
+
+### Parcel Routes
+
+| Method | Endpoint                       | Description                       | Access                  |
+|--------|--------------------------------|-----------------------------------|-------------------------|
+| POST   | `/api/v1/parcel/create-parcel` | Create a new parcel               | Sender                  |
+| GET    | `/api/v1/parcel/all-parcel`    | Get all parcels                   | Admin                   |
+| GET    | `/api/v1/parcel/mine`          | Get parcels created by sender     | Sender                  |
+| GET    | `/api/v1/parcel/incoming`      | Get parcels destined for receiver | Receiver                |
+| GET    | `/api/v1/parcel/:trackingId`   | Get parcel by trackingId          | Admin & Authenticated   |
+| PATCH  | `/api/v1/parcel/:trackingId`   | Update parcel status              | Admin & Sender          |
+
+--- 
