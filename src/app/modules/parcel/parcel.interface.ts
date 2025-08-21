@@ -9,7 +9,6 @@ export interface IStatusLog {
     | "In Transit"
     | "Delivered"
     | "Cancelled";
-  timestamp: Date;
   updatedBy: Types.ObjectId;
   note?: string;
 }

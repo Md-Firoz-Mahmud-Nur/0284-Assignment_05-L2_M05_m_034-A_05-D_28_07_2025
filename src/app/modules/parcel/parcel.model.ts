@@ -15,11 +15,10 @@ const StatusLogSchema = new Schema<IStatusLog>(
       ],
       required: true,
     },
-    timestamp: { type: Date, required: true, default: Date.now },
     updatedBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
     note: { type: String },
   },
-  { _id: true, versionKey: false }
+  { _id: false, versionKey: false, timestamps: true }
 );
 
 const ParcelSchema = new Schema<IParcel>(
@@ -35,7 +34,14 @@ const ParcelSchema = new Schema<IParcel>(
     deliveryDate: { type: Date, required: true },
     status: {
       type: String,
-      enum: ["Requested", "Approved", "Dispatched", "In Transit", "Delivered", "Cancelled"],
+      enum: [
+        "Requested",
+        "Approved",
+        "Dispatched",
+        "In Transit",
+        "Delivered",
+        "Cancelled",
+      ],
       required: true,
       default: "Requested",
     },
