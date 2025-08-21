@@ -13,3 +13,27 @@ A fully-featured API system for managing parcel deliveries with features like pa
 
 ---
 
+## Tech Stack
+
+- Node.js with Express.js  
+- MongoDB with Mongoose  
+- TypeScript  
+- JWT for Authentication  
+- Zod for Validation
+- Bcrypt for password security
+
+---
+
+## Features
+
+- **User Roles:** Admin, Sender, Receiver  
+- **Parcel Tracking:** Unique tracking IDs
+- **Parcel Lifecycle:** Requested → Approved → Dispatched → In Transit → Delivered  
+- **Parcel Cancellation:** Only senders can cancel parcels before approved  
+- **Validation:** Input validated with Zod schemas  
+- **Error Handling:** Centralized error handling with clear messages  
+- **API Response:** Consistent response structure for all endpoints  
+- **Authentication:** Secure JWT tokens with role validation  
+
+---
+
