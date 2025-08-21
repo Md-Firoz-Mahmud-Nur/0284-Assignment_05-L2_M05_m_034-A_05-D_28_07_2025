@@ -144,3 +144,7 @@ npm run dev
 ```
 
 ---
+
+## Developed by
+
+**[Md-Firoz-Mahmud-Nur](https://github.com/Md-Firoz-Mahmud-Nur)**
