@@ -160,6 +160,15 @@ const updateParcel = async (
     }
   }
 
+  if (decodedToken.role === Role.ADMIN) {
+    if (payload.status === "Delivered") {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        "Admin can not update Parcel to Delivered"
+      );
+    }
+  }
+
   const parcel = await Parcel.findOneAndUpdate({ trackingId }, payload, {
     new: true,
     runValidators: true,
