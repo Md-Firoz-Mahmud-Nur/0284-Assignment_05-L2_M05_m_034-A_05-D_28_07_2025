@@ -152,17 +152,10 @@ const updateParcel = async (
       );
     }
 
-    if (isParcelExits.status !== "Requested") {
+    if (isParcelExits.status !== "In Transit") {
       throw new AppError(
         httpStatus.BAD_REQUEST,
-        "Can not update Parcel after approved"
-      );
-    }
-
-    if (payload.status !== "Delivered") {
-      throw new AppError(
-        httpStatus.BAD_REQUEST,
-        `You can not set ${payload.status}`
+        "You can only update Parcel to Delivered after In Transit"
       );
     }
   }
