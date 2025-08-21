@@ -37,3 +37,21 @@ A fully-featured API system for managing parcel deliveries with features like pa
 
 ---
 
+## Folder Structure
+
+```
+src/
+├── app/
+|  ├── modules/
+|  |  ├── auth/
+│  |  ├── parcel/
+│  |  ├── user/
+|  ├── middlewares/
+|  ├── config/
+|  ├── utils/
+|  ├── helpers/
+├── app.ts
+├── server.ts
+```
+
+---
