@@ -4,7 +4,7 @@ import AppError from "../../errorHelpers/AppError";
 import { generateTrackingId } from "../../utils/getTrackingId";
 import { Role } from "../user/user.interface";
 import { User } from "../user/user.model";
-import { IParcel } from "./parcel.interface";
+import { IParcel, IStatusLog } from "./parcel.interface";
 import { Parcel } from "./parcel.model";
 
 const createParcel = async (
@@ -167,6 +167,38 @@ const updateParcel = async (
         "Admin can not update Parcel to Delivered"
       );
     }
+  }
+
+  if (payload.status) {
+    const currentStatus = isParcelExits.status;
+    const nextStatus = payload.status;
+    let isValid = false;
+
+    if (currentStatus === "Requested") {
+      if (nextStatus === "Cancelled" || nextStatus === "Approved")
+        isValid = true;
+    } else if (currentStatus === "Approved") {
+      if (nextStatus === "Dispatched") isValid = true;
+    } else if (currentStatus === "Dispatched") {
+      if (nextStatus === "In Transit") isValid = true;
+    } else if (currentStatus === "In Transit") {
+      if (nextStatus === "Delivered") isValid = true;
+    } else if (currentStatus === "Delivered" || currentStatus === "Cancelled") {
+      isValid = false;
+    }
+
+    if (!isValid) {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        `Cannot move directly from ${currentStatus} to ${nextStatus}.`
+      );
+    }
+
+    const newLog: IStatusLog = {
+      status: nextStatus,
+      updatedBy: decodedToken.userId,
+    };
+    payload.statusLogs = [...(isParcelExits.statusLogs as []), newLog];
   }
 
   const parcel = await Parcel.findOneAndUpdate({ trackingId }, payload, {
