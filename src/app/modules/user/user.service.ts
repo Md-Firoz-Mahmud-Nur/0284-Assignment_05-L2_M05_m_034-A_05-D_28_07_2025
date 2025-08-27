@@ -105,9 +105,9 @@ const getAllReceiver = async () => {
 };
 
 const getSingleUser = async (decodedToken: JwtPayload, userId: string) => {
-  if (decodedToken.role !== Role.ADMIN) {
-    throw new AppError(httpStatus.BAD_REQUEST, "You are not authorized");
-  }
+  // if (decodedToken.role !== Role.ADMIN) {
+  //   throw new AppError(httpStatus.BAD_REQUEST, "You are not authorized");
+  // }
 
   const isUserExist = await User.findById(userId).select("-password");
 
