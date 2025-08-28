@@ -22,10 +22,14 @@ router.patch(
 router.get("/all-sender", checkAuth(Role.ADMIN), userControllers.getAllSender);
 router.get(
   "/all-receiver",
-  checkAuth(Role.ADMIN),
+  checkAuth(Role.ADMIN, Role.SENDER),
   userControllers.getAllReceiver
 );
 router.get("/me", checkAuth(...Object.values(Role)), userControllers.getMe);
-router.get("/:id", checkAuth(Role.ADMIN), userControllers.getSingleUser);
+router.get(
+  "/:id",
+  checkAuth(Role.ADMIN, Role.RECEIVER, Role.SENDER),
+  userControllers.getSingleUser
+);
 
 export const userRoutes = router;
