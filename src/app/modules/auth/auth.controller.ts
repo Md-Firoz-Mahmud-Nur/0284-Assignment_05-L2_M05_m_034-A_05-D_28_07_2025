@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status-codes";
 import { JwtPayload } from "jsonwebtoken";
+import { envVariables } from "../../config/env";
 import AppError from "../../errorHelpers/AppError";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
@@ -44,14 +45,14 @@ const getNewAccessToken = catchAsync(async (req: Request, res: Response) => {
 const logout = catchAsync(async (req: Request, res: Response) => {
   res.clearCookie("accessToken", {
     httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    secure: envVariables.NODE_ENV === "production",
+    sameSite: envVariables.NODE_ENV === "production" ? "none" : "lax",
   });
 
   res.clearCookie("refreshToken", {
     httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    secure: envVariables.NODE_ENV === "production",
+    sameSite: envVariables.NODE_ENV === "production" ? "none" : "lax",
   });
 
   sendResponse(res, {
